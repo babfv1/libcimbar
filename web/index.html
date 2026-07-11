@@ -104,7 +104,7 @@
     #nav-container.mode-bm a.mode-bm,
     #nav-container.mode-bu a.mode-bu,
     #nav-container.mode-4c a.mode-4c {
-      color: #9fa6b2;
+      color: #dce4f0;
     }
 
     /* nav stuff */
@@ -131,7 +131,7 @@
 
     #nav-container:focus-within .bg {
       visibility: visible;
-      opacity: .6;
+      opacity: .8;
     }
 
     #nav-container * {
@@ -249,19 +249,20 @@
       top: 0;
       left: 0;
       height: calc(100% - 60px);
-      overflow-x: clip;
-      background-color: #282C34;
       text-align: center;
       pointer-events: auto;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      transform: translateX(-100%);
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      transform: translateX(-300%);
       transition: transform .3s;
     }
 
     #nav-content ul {
       height: calc(100% - 60px);
+      width: max-content;
       display: flex;
       flex-direction: column;
+      flex-wrap: wrap;
+      align-content: flex-start;
       list-style: none;
     }
 
@@ -272,7 +273,8 @@
     #nav-content li a {
       display: block;
       padding: 10px 5px;
-      color: #9fa6b2;
+      color: #dce4f0;
+      text-shadow: 10px blue;
       text-decoration: none;
       transition: color .1s;
     }
@@ -297,7 +299,7 @@
     }
 
     #nav-content li:hover {
-      background-color: #2c323c;
+      background-color: rgba(0, 0, 0, 0.1);
     }
 
     #nav-content li:not(.small)+.small {
@@ -318,8 +320,23 @@
       width: 100%;
     }
 
-    #nav-container:focus-within #nav-content {
+    #nav-container:focus-within #nav-content,
+    #debug_menu:focus-within {
       transform: none;
+    }
+
+    #debug_menu {
+      transform: translateX(100%);
+      margin-top: 60px;
+      right: 0;
+      padding: 20px;
+      position: absolute;
+      top: 0;
+      max-width: 95%;
+      z-index: 2;
+      transition: transform .3s;
+      opacity: 95%;
+      background-color: black;
     }
 
     @keyframes glowing {
@@ -364,10 +381,18 @@
           <input type="range" class="range" min="5" max="20" step="5" value="15" oninput="Main.setFPS(this.value)"
             onchange="Main.setFPS(this.value)" />
         </li>
+        <li class="small"><a href="javascript:void(0)" onclick="Main.showDebug()">Debug</a></li>
         <li class="small"><a href="javascript:void(0)" onclick="Main.toggleFullscreen()">Fullscreen</a></li>
         <li class="small"><a href="https://github.com/sz3/libcimbar">github</a></li>
         <li class="small"><a href="https://github.com/sz3/cfc/releases/latest">android app</a></li>
       </ul>
+    </div>
+    <div id="debug_menu">
+      <button id="debug-button" onclick="Main.showDebug();"></button>
+      <div class="statusbox" id="errorbox"></div>
+      <div class="statusbox" id="deb_main">hi0</div>
+      <div class="statusbox" id="deb_bg">hi1</div>
+      <div class="statusbox" id="deb_version">%VERSION%</div>
     </div>
   </div>
 

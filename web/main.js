@@ -233,6 +233,10 @@ var Main = function () {
       }
     },
 
+    showDebug: function () {
+      document.getElementById("debug-button").focus();
+    },
+
     clickNav: function () {
       document.getElementById("nav-button").focus();
     },
