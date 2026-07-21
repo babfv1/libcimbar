@@ -3,10 +3,6 @@ cmake_minimum_required(VERSION 3.10)
 project ( libcimbar )
 enable_testing()
 
-if (MSVC)
-    add_compile_options(/FI "iso646.h")
-endif()
-
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -15,6 +11,14 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 add_definitions("-DLIBCIMBAR_PROJECT_ROOT=\"${libcimbar_SOURCE_DIR}\"")
+
+# reproducible build, hopefully
+if(NOT MSVC)
+	add_compile_options(
+		-ffile-prefix-map=${CMAKE_SOURCE_DIR}=.
+		-ffile-prefix-map=${CMAKE_BINARY_DIR}=.
+	)
+endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
 	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
@@ -56,7 +60,10 @@ if(NOT DEFINED CPPFILESYSTEM)
 	set(CPPFILESYSTEM "stdc++fs")
 endif()
 
+# special snowflake MSVC section
 if(MSVC)
+	add_compile_options(/FI "iso646.h")
+
 	set(CPPFILESYSTEM "")
 endif()
 
