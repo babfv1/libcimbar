@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: recursive # 必须拉取子模块
 
@@ -24,7 +24,7 @@ jobs:
         cmake --build . --config Release -j 4
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: libcimbar-windows-exe
         path: build/Release/cimbar.exe
