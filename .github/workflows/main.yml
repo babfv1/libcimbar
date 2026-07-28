@@ -5,22 +5,28 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
       with:
         submodules: recursive # 必须拉取子模块
 
-    - name: Install vcpkg
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgGitCommitId: master
-
-    - name: Install Dependencies (OpenCV & GLFW)
-      run: vcpkg install opencv:x64-windows glfw3:x64-windows
-
-    - name: Configure and Build
+    - name: Setup and Install vcpkg & Dependencies
       run: |
-        mkdir build && cd build
+        # 直接克隆微软官方 vcpkg
+        git clone https://github.com/microsoft/vcpkg.git
+        cd vcpkg
+        # 初始化 vcpkg
+        .\bootstrap-vcpkg.bat
+        # 安装 libcimbar 所需的依赖库
+        .\vcpkg install opencv:x64-windows glfw3:x64-windows
+
+    - name: Configure and Build libcimbar
+      run: |
+        mkdir build
+        cd build
+        # 引用刚才下载的 vcpkg 工具链进行 CMake 配置
         cmake .. -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -A x64
+        # 开始多线程编译
         cmake --build . --config Release -j 4
 
     - name: Upload Artifact
