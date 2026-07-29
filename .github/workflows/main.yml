@@ -33,7 +33,7 @@ jobs:
         }
 
     - name: Configure and Build libcimbar
-      continue-on-error: true # 【关键】无视清理脚本的报错，强行继续
+      continue-on-error: true
       run: |
         mkdir build
         cd build
@@ -44,7 +44,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: libcimbar-windows-build
-        # 【关键】把编译好的 exe 和配套的 OpenCV DLL 运行库一起打包下载！
         path: |
-          **/*/Release/*.exe
-          **/*/Release/*.dll
+          build/**/*.exe
+          build/**/*.dll
